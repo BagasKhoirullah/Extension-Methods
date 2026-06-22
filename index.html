@@ -969,7 +969,15 @@ void main() {
             document.getElementById('progress').style.width = scrolled + '%';
         };
 
-        // ---- MODAL DARTPAD ----
+        // ---- FUNGSI UTAMA: BUKA DARTPAD DENGAN URL ----
+        function openDartpad(url) {
+            var frame = document.getElementById('dartpadFrame');
+            if (!frame) return;
+            frame.src = url;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // ---- FUNGSI ALTERNATIF: BUKA DARTPAD DARI KODE DI <pre> ----
         function openDartpadFromPre(btn) {
             // Cari elemen <pre> sebelumnya
             var pre = btn.previousElementSibling;
@@ -979,17 +987,20 @@ void main() {
             if (!pre) return;
 
             var code = pre.textContent;
-            // Encode untuk URL
             var encoded = encodeURIComponent(code);
             var url = 'https://dartpad.dev/embed-flutter.html?code=' + encoded + '&run=true&split=50';
 
-            document.getElementById('dartpadFrame').src = url;
+            var frame = document.getElementById('dartpadFrame');
+            if (!frame) return;
+            frame.src = url;
             document.getElementById('modal').style.display = 'flex';
         }
 
+        // ---- TUTUP MODAL ----
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
-            document.getElementById('dartpadFrame').src = '';
+            var frame = document.getElementById('dartpadFrame');
+            if (frame) frame.src = '';
         }
 
         // Tutup modal dengan tombol ESC
