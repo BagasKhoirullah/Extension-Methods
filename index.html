@@ -416,7 +416,7 @@
     ConfigBuilder port(int p) { return this; }
     Config build() { return Config(); }
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                
             </div>
         </section>
 
@@ -461,7 +461,7 @@ void main() {
     print('Capitalized name: $capitalized');
     print('Is "test@mail.com" an email? $isEmail');
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/d92757be66a6649af14b8807de2c0bb7')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#94a3b8;">🔴 Kode terasa <strong>imperatif</strong> dan tidak mengikuti gaya <em>object-oriented</em> yang natural.</p>
             </div>
         </section>
@@ -495,7 +495,7 @@ void main() {
     print('Is "test@mail.com" an email? $isEmail');
     print('Reversed "hello": $reversed');
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/40787076ca9a1e1b434ee3d1cff9fe8c')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#4ade80;">✅ Kode lebih <strong>readable</strong>, <strong>expressive</strong>, dan mengikuti paradigma OOP.</p>
             </div>
         </section>
@@ -511,7 +511,6 @@ void main() {
         // ...
     }
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
                 <ul>
                     <li><strong>NamaExtension</strong> (opsional) – jika dihilangkan, extension hanya tersedia di library yang sama.</li>
                     <li><strong>TipeYangDiperluas</strong> – tipe yang ingin kita tambahi fungsionalitas (misal <span class="code-inline">String</span>, <span class="code-inline">int</span>, atau kelas kustom).</li>
@@ -527,7 +526,7 @@ void main() {
     print(4.isEven); // true
     print(7.isOdd);  // true
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/e1967c1ea555f0cb8ac0394826320985')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#94a3b8;">📌 Extension juga bisa memiliki <strong>getter</strong>, <strong>setter</strong>, dan <strong>operator</strong> overloading.</p>
             </div>
         </section>
@@ -545,17 +544,18 @@ void main() {
                 </ul>
 
                 <h3 style="margin-top:16px; color:#38bdf8;">Contoh: Extension untuk List&lt;int&gt;</h3>
-                <pre>extension IntListExtensions on List&lt;int&gt; {
-    int get sum => fold(0, (total, item) => total + item);
-    double get average => isEmpty ? 0 : sum / length;
+                <pre>
+extension IntListExtensions on List<int> {
+  int get sum => fold(0, (total, item) => total + item);
+  double get average => isEmpty ? 0 : sum / length;
 }
 
 void main() {
-    var numbers = [1, 2, 3, 4, 5];
-    print(numbers.sum);      // 15
-    print(numbers.average);  // 3.0
+  var numbers = [1, 2, 3, 4, 5];
+  print(numbers.sum);      // 15
+  print(numbers.average);  // 3.0
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/38ed125652fa295e232ecc318ee91168')">▶ Buka di DartPad</button>
             </div>
         </section>
 
@@ -584,7 +584,7 @@ void main() {
     print(user.isAdult);    // true
     print(user.introduce()); // Hi, I am John Doe, 25 years old.
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/facbde67297ea2246e1434f17154a7a5')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#94a3b8;">🧩 Dengan extension, kode klien menjadi lebih <strong>ekspresif</strong> dan <strong>terorganisir</strong> tanpa harus mengubah kelas asli.</p>
             </div>
         </section>
@@ -608,7 +608,7 @@ void main() {
     print(name.orEmpty());          // ''
     print(name.withDefault('Guest')); // 'Guest'
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/33104099eed7ae98e96b2aaf8fe51526')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#94a3b8;">🛡️ Menghindari <span class="code-inline">null</span> checks yang berulang-ulang dan membuat kode lebih aman.</p>
             </div>
         </section>
@@ -618,37 +618,41 @@ void main() {
             <h2>💰 Praktik 1 – Utilities untuk Dart Types</h2>
             <div class="card">
                 <p>Membuat extension untuk <span class="code-inline">num</span> dengan berbagai utility yang berguna.</p>
-                <pre>extension NumberExtensions on num {
-    // Format ke Rupiah
-    String toRupiah() {
-        return 'Rp${toStringAsFixed(0).replaceAllMapped(
-            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (match) =&gt; '${match[1]}.',
-        )}';
-    }
+                <pre>
+extension NumberExtensions on num {
+  // Format ke Rupiah
+  String toRupiah() {
+    return 'Rp${toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (match) => '${match[1]}.',
+    )}';
+  }
 
-    // Check jika dalam range
-    bool isBetween(num min, num max) {
-        return this &gt;= min &amp;&amp; this &lt;= max;
-    }
+  // Check jika dalam range
+  bool isBetween(num min, num max) {
+    return this >= min && this <= max;
+  }
 
-    // Pangkat
-    num power(int exponent) {
-        var result = this;
-        for (var i = 1; i &lt; exponent; i++) {
-            result *= this;
-        }
-        return result;
+  // Pangkat (untuk eksponen integer non-negatif)
+  num power(int exponent) {
+    if (exponent == 0) return 1;
+    if (exponent < 0) throw ArgumentError('Exponent must be non-negative');
+    var result = this;
+    for (var i = 1; i < exponent; i++) {
+      result *= this;
     }
+    return result;
+  }
 }
 
 void main() {
-    var price = 1500000;
-    print(price.toRupiah());      // 'Rp1.500.000'
-    print(5.isBetween(1, 10));    // true
-    print(2.power(3));            // 8
+  var price = 1500000;
+  print(price.toRupiah());      // 'Rp1.500.000'
+  print(5.isBetween(1, 10));    // true
+  print(2.power(3));            // 8
+  print(2.power(0));            // 1 (tambahan contoh)
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/46d16764141dcecbe0564456773c3e62')">▶ Buka di DartPad</button>
             </div>
         </section>
 
@@ -657,40 +661,41 @@ void main() {
             <h2>🧬 Generic Extensions</h2>
             <div class="card">
                 <p>Extension juga bisa bersifat <strong>generic</strong> sehingga bekerja untuk berbagai tipe elemen.</p>
-                <pre>extension ListExtensions&lt;T&gt; on List&lt;T&gt; {
-    // Safe get dengan default
-    T? getOrNull(int index) {
-        if (index &lt; 0 || index &gt;= length) return null;
-        return this[index];
-    }
+                <pre>
+extension ListExtensions<T> on List<T> {
+  // Safe get dengan default (mengembalikan null jika index tidak valid)
+  T? getOrNull(int index) {
+    if (index < 0 || index >= length) return null;
+    return this[index];
+  }
 
-    // Split list menjadi chunks
-    List&lt;List&lt;T&gt;&gt; chunk(int size) {
-        var chunks = &lt;List&lt;T&gt;&gt;[];
-        for (var i = 0; i &lt; length; i += size) {
-            chunks.add(sublist(i, i + size &gt; length ? length : i + size));
-        }
-        return chunks;
+  // Membagi list menjadi potongan (chunks) berukuran tertentu
+  List<List<T>> chunk(int size) {
+    var chunks = <List<T>>[];
+    for (var i = 0; i < length; i += size) {
+      chunks.add(sublist(i, i + size > length ? length : i + size));
     }
+    return chunks;
+  }
 
-    // Distinct items
-    List&lt;T&gt; distinct() {
-        var result = &lt;T&gt;[];
-        for (var item in this) {
-            if (!result.contains(item)) {
-                result.add(item);
-            }
-        }
-        return result;
+  // Mengembalikan elemen unik (menghilangkan duplikat)
+  List<T> distinct() {
+    var result = <T>[];
+    for (var item in this) {
+      if (!result.contains(item)) {
+        result.add(item);
+      }
     }
+    return result;
+  }
 }
 
 void main() {
-    var numbers = [1, 2, 3, 4, 5, 6, 7];
-    print(numbers.chunk(3));  // [[1, 2, 3], [4, 5, 6], [7]]
-    print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
+  var numbers = [1, 2, 3, 4, 5, 6, 7];
+  print(numbers.chunk(3));  // [[1, 2, 3], [4, 5, 6], [7]]
+  print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/ebb9288434be7befa52c1ac31e1fdb99')">▶ Buka di DartPad</button>
             </div>
         </section>
 
@@ -715,7 +720,7 @@ void main() {
     print(today.toYYYYMMDD);   // '2024-01-22'
     print(today.startOfDay);   // 2024-01-22 00:00:00.000
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/84ad94f80d8893a4f45d4dd9858a3557')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#94a3b8;">🔒 Cocok untuk <strong>utility internal</strong> yang tidak perlu diekspos ke publik.</p>
             </div>
         </section>
@@ -744,7 +749,7 @@ void main() {
     // text.capitalize(); // ERROR: ambiguous
     se.capitalize(text);  // Gunakan dengan prefix
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/3e8736aabb5112976eadc8c656aecd75')">▶ Buka di DartPad</button>
                 <p style="margin-top:8px; color:#fbbf24;">💡 Gunakan <strong>prefix</strong> atau <strong>hide/show</strong> untuk mengatasi konflik.</p>
             </div>
         </section>
@@ -782,8 +787,8 @@ void main() {
     print(age.isPositive); // true
     print(age.isBetween(18, 65)); // true
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
-                <p style="margin-top:8px; color:#4ade80;">✅ Validator extensions membuat kode validasi menjadi <strong>lebih bersih</strong>, <strong>readable</strong>, dan <strong>reusable</strong>.</p>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/2554a771ca7b43d75d50bbf606f8a4e9')">▶ Buka di DartPad</button>
+        <p style="margin-top:8px; color:#4ade80;">✅ Validator extensions membuat kode validasi menjadi <strong>lebih bersih</strong>, <strong>readable</strong>, dan <strong>reusable</strong>.</p>
             </div>
         </section>
 
@@ -823,7 +828,8 @@ void main() {
             <h2>🧩 Soal 1: Konflik Nama Antar Extension</h2>
             <div class="card">
                 <p><span class="soal-tag">SOAL</span> Perhatikan kode berikut:</p>
-                <pre>extension StringNumber on String {
+                <pre>
+extension StringNumber on String {
   int toInt() {
     return int.parse(this);
   }
@@ -839,7 +845,7 @@ void main() {
   String angka = '123';
   print(angka.toInt());
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+
                 <p><strong>Pertanyaan:</strong><br />
                 Apa yang terjadi saat kode dijalankan? Jelaskan penyebabnya dan berikan solusi agar kedua extension dapat digunakan tanpa konflik.</p>
 
@@ -859,6 +865,7 @@ void main() {
   print(StringNumber(angka).toInt()); // memanggil dari StringNumber
   print(StringDouble(angka).toInt()); // memanggil dari StringDouble
 }</pre>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/1a5b2d2e5c380ee091c7a7189885910a')">▶ Buka di DartPad</button>
                 </div>
             </div>
         </section>
@@ -887,7 +894,6 @@ void main() {
   c.increment();
   print(c.getValue());
 }</pre>
-                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
                 <p><strong>Pertanyaan:</strong><br />
                 Jelaskan mengapa kode di atas gagal dikompilasi. Bagaimana cara memperbaikinya tanpa mengubah akses modifier <code>_value</code> menjadi publik?</p>
 
@@ -921,6 +927,7 @@ void main() {
   c.increment();
   print(c.getValue()); // output: 1
 }</pre>
+<button class="dartpad-btn" onclick="openDartpad('https://dartpad.dev/92b6cd7e99eff6d7e4f4a6a9232e68ce')">▶ Buka di DartPad</button>             
                     <p>Dengan getter, kita tetap menjaga <code>_value</code> sebagai private, tetapi memberikan akses baca melalui getter yang dapat digunakan oleh extension.</p>
                 </div>
             </div>
