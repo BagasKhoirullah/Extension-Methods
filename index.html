@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OOP Dart - Extension Methods</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        /* PROGRESS */
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #38bdf8;
+            width: 0%;
+            z-index: 5000;
+        }
+
+        /* MENU */
+        .menu-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 22px;
+            background: #38bdf8;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 4000;
+            display: none;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            height: 100%;
+            background: #020617;
+            padding: 25px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow: auto;
+            border-right: 1px solid #1e293b;
+            transition: 0.3s;
+            z-index: 3000;
+        }
+
+        .sidebar h2 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .sidebar input {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: none;
+            background: #0f172a;
+            color: white;
+            font-size: 14px;
+        }
+        .sidebar input::placeholder {
+            color: #64748b;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #cbd5f5;
+            border-radius: 6px;
+            transition: 0.2s;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: #1e293b;
+            border-left-color: #38bdf8;
+        }
+
+        /* CONTENT */
+        .content {
+            max-width: 960px;
+            margin-left: 280px;
+            padding: 40px 50px;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 34px;
+            color: #38bdf8;
+        }
+
+        .identity {
+            margin-top: 6px;
+            opacity: 0.8;
+            font-size: 15px;
+        }
+
+        /* CARD */
+        .card {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-top: 15px;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h3 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .card ul {
+            padding-left: 22px;
+            margin: 8px 0 10px 0;
+        }
+        .card ul li {
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+
+        .card p {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        .card hr {
+            border: none;
+            border-top: 1px solid #1e293b;
+            margin: 18px 0;
+        }
+
+        .card .jawaban {
+            background: #0f172a;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 4px solid #fbbf24;
+        }
+        .card .jawaban strong {
+            color: #fbbf24;
+        }
+
+        pre {
+            background: #0f172a;
+            padding: 16px 18px;
+            border-radius: 8px;
+            overflow: auto;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.7;
+            border: 1px solid #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background: #7dd3fc;
+        }
+
+        .dartpad-btn {
+            margin-top: 12px;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            display: inline-block;
+        }
+        .dartpad-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        /* POPUP */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 6000;
+        }
+
+        .modal-content {
+            width: 92%;
+            height: 90%;
+            background: #020617;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .modal-header span {
+            font-size: 24px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+        .modal-header span:hover {
+            color: #fff;
+        }
+
+        #dartpadFrame {
+            flex: 1;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .menu-btn {
+                display: block;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+                padding: 70px 20px 40px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .content {
+                padding: 60px 12px 30px;
+            }
+            .card {
+                padding: 16px;
+            }
+            pre {
+                font-size: 12px;
+                padding: 12px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+        }
+
+        .gambar-box {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            display: block;
+            margin: 15px auto 0;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-right: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 14px;
+        }
+        th,
+        td {
+            border: 1px solid #1e293b;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background: #0f172a;
+            color: #38bdf8;
+        }
+        td.good {
+            color: #4ade80;
+        }
+        td.bad {
+            color: #f87171;
+        }
+        td.warn {
+            color: #fbbf24;
+        }
+        .code-inline {
+            background: #0f172a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            color: #38bdf8;
+        }
+        .soal-tag {
+            display: inline-block;
+            background: #f87171;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PROGRESS BAR -->
+    <div id="progress"></div>
+
+    <!-- MENU TOGGLE (mobile) -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>📘 Daftar Isi</h2>
+        <input type="text" placeholder="Cari materi..." onkeyup="searchMenu(this)" />
+        <a href="#review">Review Sesi 8 – Builder Pattern</a>
+        <a href="#pengantar">Pengantar Extension Methods</a>
+        <a href="#masalah">Masalah Tanpa Extension Methods</a>
+        <a href="#solusi">Solusi dengan Extension Methods</a>
+        <a href="#sintaks">Sintaks Extension Methods</a>
+        <a href="#tipe">Tipe yang Didukung</a>
+        <a href="#custom">Extension untuk Custom Classes</a>
+        <a href="#nullsafe">Extension untuk Null Safety</a>
+        <a href="#praktik1">Praktik 1 – Utilities untuk Dart Types</a>
+        <a href="#generic">Generic Extensions</a>
+        <a href="#anonim">Extension Tanpa Nama</a>
+        <a href="#konflik">Konflik Nama Extension</a>
+        <a href="#praktik2">Praktik 2 – Validator Extensions</a>
+        <a href="#ringkasan">Ringkasan &amp; Best Practices</a>
+        <a href="#soal1">Soal 1 – Konflik Nama</a>
+        <a href="#soal2">Soal 2 – Private Member</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <header>
+            <h1>🧩 Extension Methods</h1>
+            <p>Materi OOP Dart – Sesi 9</p>
+            <div class="identity">
+                Nama: <b>M. Bagas Khoirullah</b> &nbsp;|&nbsp; NIM: <b>251410016</b>
+            </div>
+        </header>
+
+        <!-- ===== SLIDE 1 ===== -->
+        <section id="review">
+            <h2>📌 Review Sesi 8 – Builder Pattern</h2>
+            <div class="card">
+                <ul>
+                    <li><strong>Builder Pattern</strong> untuk membangun objek kompleks secara bertahap.</li>
+                    <li><strong>Method chaining</strong> untuk menciptakan <em>fluent API</em> yang mudah dibaca.</li>
+                    <li>Contoh: <span class="code-inline">Pizza.builder().size('large').addTopping('cheese').build()</span></li>
+                </ul>
+                <p><strong>Contoh cepat:</strong></p>
+                <pre>class ConfigBuilder {
+    ConfigBuilder host(String h) { return this; }
+    ConfigBuilder port(int p) { return this; }
+    Config build() { return Config(); }
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 2 ===== -->
+        <section id="pengantar">
+            <h2>🧠 Pengantar Extension Methods</h2>
+            <div class="card">
+                <ul>
+                    <li><strong>Apa itu?</strong> Fitur untuk menambahkan metode baru ke tipe yang sudah ada <em>tanpa</em> memodifikasi kode asli.</li>
+                    <li>Tersedia sejak <strong>Dart 2.7</strong>.</li>
+                    <li><strong>Analog:</strong> Memberikan kemampuan baru tanpa mengubah benda aslinya.</li>
+                </ul>
+                <p style="margin-top:10px; background:#0f172a; padding:12px 16px; border-radius:6px; border-left:4px solid #38bdf8;">
+                    💡 <em>“Extension methods memungkinkan kita memperluas perilaku tipe yang sudah ada dengan cara yang natural dan type-safe.”</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 3 ===== -->
+        <section id="masalah">
+            <h2>⚠️ Masalah Tanpa Extension Methods</h2>
+            <div class="card">
+                <p>Tanpa extension, kita sering membuat <strong>utility class</strong> yang kurang natural dan terasa asing saat digunakan.</p>
+                <pre>// Utility class yang kurang natural
+class StringUtils {
+    static String capitalize(String text) {
+        if (text.isEmpty) return text;
+        return text[0].toUpperCase() + text.substring(1);
+    }
+    static bool isEmail(String text) {
+        return text.contains('@');
+    }
+}
+
+void main() {
+    // Penggunaan kurang natural
+    var name = 'john';
+    var capitalized = StringUtils.capitalize(name); // 'John'
+    var isEmail = StringUtils.isEmail('test@mail.com'); // true
+
+    print('Original name: $name');
+    print('Capitalized name: $capitalized');
+    print('Is "test@mail.com" an email? $isEmail');
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#94a3b8;">🔴 Kode terasa <strong>imperatif</strong> dan tidak mengikuti gaya <em>object-oriented</em> yang natural.</p>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 4 ===== -->
+        <section id="solusi">
+            <h2>✅ Solusi dengan Extension Methods</h2>
+            <div class="card">
+                <p>Dengan extension, kita bisa menambahkan method langsung ke tipe <span class="code-inline">String</span> sehingga penggunaan menjadi lebih <strong>natural</strong> dan <strong>fluent</strong>.</p>
+                <pre>// Extension method untuk String
+extension StringExtensions on String {
+    String capitalize() {
+        if (isEmpty) return this;
+        return this[0].toUpperCase() + substring(1);
+    }
+    bool get isEmail => contains('@');
+    String reverse() {
+        return split('').reversed.join();
+    }
+}
+
+void main() {
+    // Penggunaan lebih natural
+    var name = 'john';
+    var capitalized = name.capitalize(); // 'John'
+    var isEmail = 'test@mail.com'.isEmail; // true
+    var reversed = 'hello'.reverse(); // 'olleh'
+
+    print('Original name: $name');
+    print('Capitalized name: $capitalized');
+    print('Is "test@mail.com" an email? $isEmail');
+    print('Reversed "hello": $reversed');
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#4ade80;">✅ Kode lebih <strong>readable</strong>, <strong>expressive</strong>, dan mengikuti paradigma OOP.</p>
+            </div>
+        </section>
+
+        <!-- ===== SIntaks Extension Methods ===== -->
+        <section id="sintaks">
+            <h2>📐 Sintaks Extension Methods</h2>
+            <div class="card">
+                <p>Bentuk dasar dari extension methods sangat sederhana:</p>
+                <pre>extension <em>NamaExtension</em> on <em>TipeYangDiperluas</em> {
+    // Method, getter, setter, atau operator tambahan
+    <em>ReturnType</em> namaMethod(<em>Parameter</em>) {
+        // ...
+    }
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <ul>
+                    <li><strong>NamaExtension</strong> (opsional) – jika dihilangkan, extension hanya tersedia di library yang sama.</li>
+                    <li><strong>TipeYangDiperluas</strong> – tipe yang ingin kita tambahi fungsionalitas (misal <span class="code-inline">String</span>, <span class="code-inline">int</span>, atau kelas kustom).</li>
+                    <li>Di dalam body, kita bisa mengakses <span class="code-inline">this</span> yang merujuk pada instance dari tipe tersebut.</li>
+                </ul>
+                <p><strong>Contoh sederhana:</strong></p>
+                <pre>extension IntExtensions on int {
+    bool get isEven => this % 2 == 0;
+    bool get isOdd => !isEven;
+}
+
+void main() {
+    print(4.isEven); // true
+    print(7.isOdd);  // true
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#94a3b8;">📌 Extension juga bisa memiliki <strong>getter</strong>, <strong>setter</strong>, dan <strong>operator</strong> overloading.</p>
+            </div>
+        </section>
+
+        <!-- ===== Tipe yang Didukung ===== -->
+        <section id="tipe">
+            <h2>📦 Tipe yang Didukung</h2>
+            <div class="card">
+                <p>Extension methods dapat diterapkan pada berbagai macam tipe di Dart:</p>
+                <ul>
+                    <li><strong>Built-in types:</strong> <span class="code-inline">String</span>, <span class="code-inline">int</span>, <span class="code-inline">double</span>, <span class="code-inline">List</span>, <span class="code-inline">Map</span>, dll.</li>
+                    <li><strong>Custom classes:</strong> Kelas buatan sendiri.</li>
+                    <li><strong>Generic types:</strong> <span class="code-inline">List&lt;T&gt;</span>, <span class="code-inline">Map&lt;K, V&gt;</span>.</li>
+                    <li><strong>Nullable types:</strong> <span class="code-inline">String?</span>, <span class="code-inline">int?</span>.</li>
+                </ul>
+
+                <h3 style="margin-top:16px; color:#38bdf8;">Contoh: Extension untuk List&lt;int&gt;</h3>
+                <pre>extension IntListExtensions on List&lt;int&gt; {
+    int get sum => fold(0, (total, item) => total + item);
+    double get average => isEmpty ? 0 : sum / length;
+}
+
+void main() {
+    var numbers = [1, 2, 3, 4, 5];
+    print(numbers.sum);      // 15
+    print(numbers.average);  // 3.0
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+            </div>
+        </section>
+
+        <!-- ===== Extension untuk Custom Classes ===== -->
+        <section id="custom">
+            <h2>🏷️ Extension untuk Custom Classes</h2>
+            <div class="card">
+                <p>Kita juga bisa menambahkan extension ke <strong>kelas buatan sendiri</strong>, misalnya untuk mempermudah operasi atau menambah utilitas.</p>
+                <pre>class User {
+    final String firstName;
+    final String lastName;
+    final int age;
+
+    User(this.firstName, this.lastName, this.age);
+}
+
+extension UserExtensions on User {
+    String get fullName => '$firstName $lastName';
+    bool get isAdult => age >= 18;
+    String introduce() => 'Hi, I am $fullName, $age years old.';
+}
+
+void main() {
+    var user = User('John', 'Doe', 25);
+    print(user.fullName);   // John Doe
+    print(user.isAdult);    // true
+    print(user.introduce()); // Hi, I am John Doe, 25 years old.
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#94a3b8;">🧩 Dengan extension, kode klien menjadi lebih <strong>ekspresif</strong> dan <strong>terorganisir</strong> tanpa harus mengubah kelas asli.</p>
+            </div>
+        </section>
+
+        <!-- ===== Null Safety ===== -->
+        <section id="nullsafe">
+            <h2>🛡️ Extension untuk Null Safety</h2>
+            <div class="card">
+                <p>Extension juga bisa diterapkan pada <strong>nullable types</strong> untuk memberikan akses yang aman.</p>
+                <pre>extension NullableStringExtensions on String? {
+    // Safe access untuk nullable string
+    String orEmpty() => this ?? '';
+    bool get isNullOrEmpty => this == null || this!.isEmpty;
+    bool get isNotNullOrEmpty => !isNullOrEmpty;
+    String withDefault(String defaultValue) => this ?? defaultValue;
+}
+
+void main() {
+    String? name;
+    print(name.isNullOrEmpty);      // true
+    print(name.orEmpty());          // ''
+    print(name.withDefault('Guest')); // 'Guest'
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#94a3b8;">🛡️ Menghindari <span class="code-inline">null</span> checks yang berulang-ulang dan membuat kode lebih aman.</p>
+            </div>
+        </section>
+
+        <!-- ===== Praktik 1 ===== -->
+        <section id="praktik1">
+            <h2>💰 Praktik 1 – Utilities untuk Dart Types</h2>
+            <div class="card">
+                <p>Membuat extension untuk <span class="code-inline">num</span> dengan berbagai utility yang berguna.</p>
+                <pre>extension NumberExtensions on num {
+    // Format ke Rupiah
+    String toRupiah() {
+        return 'Rp${toStringAsFixed(0).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (match) =&gt; '${match[1]}.',
+        )}';
+    }
+
+    // Check jika dalam range
+    bool isBetween(num min, num max) {
+        return this &gt;= min &amp;&amp; this &lt;= max;
+    }
+
+    // Pangkat
+    num power(int exponent) {
+        var result = this;
+        for (var i = 1; i &lt; exponent; i++) {
+            result *= this;
+        }
+        return result;
+    }
+}
+
+void main() {
+    var price = 1500000;
+    print(price.toRupiah());      // 'Rp1.500.000'
+    print(5.isBetween(1, 10));    // true
+    print(2.power(3));            // 8
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+            </div>
+        </section>
+
+        <!-- ===== Generic Extensions ===== -->
+        <section id="generic">
+            <h2>🧬 Generic Extensions</h2>
+            <div class="card">
+                <p>Extension juga bisa bersifat <strong>generic</strong> sehingga bekerja untuk berbagai tipe elemen.</p>
+                <pre>extension ListExtensions&lt;T&gt; on List&lt;T&gt; {
+    // Safe get dengan default
+    T? getOrNull(int index) {
+        if (index &lt; 0 || index &gt;= length) return null;
+        return this[index];
+    }
+
+    // Split list menjadi chunks
+    List&lt;List&lt;T&gt;&gt; chunk(int size) {
+        var chunks = &lt;List&lt;T&gt;&gt;[];
+        for (var i = 0; i &lt; length; i += size) {
+            chunks.add(sublist(i, i + size &gt; length ? length : i + size));
+        }
+        return chunks;
+    }
+
+    // Distinct items
+    List&lt;T&gt; distinct() {
+        var result = &lt;T&gt;[];
+        for (var item in this) {
+            if (!result.contains(item)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+}
+
+void main() {
+    var numbers = [1, 2, 3, 4, 5, 6, 7];
+    print(numbers.chunk(3));  // [[1, 2, 3], [4, 5, 6], [7]]
+    print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+            </div>
+        </section>
+
+        <!-- ===== Extension Tanpa Nama ===== -->
+        <section id="anonim">
+            <h2>🔒 Extension Tanpa Nama</h2>
+            <div class="card">
+                <p>Extension <strong>tanpa nama</strong> hanya bisa diakses di <em>library</em> yang sama (satu file).</p>
+                <pre>// File: date_utils.dart
+extension on DateTime {
+    String get toYYYYMMDD {
+        return '${year}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+    }
+    DateTime get startOfDay {
+        return DateTime(year, month, day);
+    }
+}
+
+void main() {
+    // Hanya bisa diakses di file ini
+    var today = DateTime.now();
+    print(today.toYYYYMMDD);   // '2024-01-22'
+    print(today.startOfDay);   // 2024-01-22 00:00:00.000
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#94a3b8;">🔒 Cocok untuk <strong>utility internal</strong> yang tidak perlu diekspos ke publik.</p>
+            </div>
+        </section>
+
+        <!-- ===== Konflik Nama ===== -->
+        <section id="konflik">
+            <h2>⚡ Konflik Nama Extension</h2>
+            <div class="card">
+                <p>Jika ada <strong>multiple extensions</strong> dengan nama method yang sama, Dart akan melaporkan <em>error</em> ambigu.</p>
+                <pre>// File: string_extensions.dart
+extension StringCaseExtensions on String {
+    String capitalize() => /* ... */;
+}
+
+// File: text_utils.dart
+extension TextUtilsExtensions on String {
+    String capitalize() => /* ... berbeda ... */;
+}
+
+// Solusi: Import dengan prefix atau show/hide
+import 'string_extensions.dart' as se;
+import 'text_utils.dart' hide capitalize;
+
+void main() {
+    var text = 'hello';
+    // text.capitalize(); // ERROR: ambiguous
+    se.capitalize(text);  // Gunakan dengan prefix
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#fbbf24;">💡 Gunakan <strong>prefix</strong> atau <strong>hide/show</strong> untuk mengatasi konflik.</p>
+            </div>
+        </section>
+
+        <!-- ===== Praktik 2 – Validator Extensions ===== -->
+        <section id="praktik2">
+            <h2>✅ Praktik 2 – Validator Extensions</h2>
+            <div class="card">
+                <p>Membuat extension untuk validasi data pada <span class="code-inline">String</span> dan <span class="code-inline">int</span>.</p>
+                <pre>extension StringValidator on String {
+    bool get isValidEmail => RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(this);
+    bool get isValidPhone => RegExp(r'^\+?[0-9]{10,15}$').hasMatch(this);
+    bool get isNumeric => double.tryParse(this) != null;
+    bool get isAlphanumeric => RegExp(r'^[a-zA-Z0-9]+$').hasMatch(this);
+}
+
+extension IntValidator on int {
+    bool get isPositive => this > 0;
+    bool get isNegative => this < 0;
+    bool get isZero => this == 0;
+    bool isBetween(int min, int max) => this >= min && this <= max;
+}
+
+void main() {
+    var email = 'user@example.com';
+    print(email.isValidEmail); // true
+
+    var phone = '+628123456789';
+    print(phone.isValidPhone); // true
+
+    var numStr = '123';
+    print(numStr.isNumeric); // true
+
+    var age = 25;
+    print(age.isPositive); // true
+    print(age.isBetween(18, 65)); // true
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p style="margin-top:8px; color:#4ade80;">✅ Validator extensions membuat kode validasi menjadi <strong>lebih bersih</strong>, <strong>readable</strong>, dan <strong>reusable</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ===== Ringkasan ===== -->
+        <section id="ringkasan">
+            <h2>📝 Ringkasan &amp; Best Practices</h2>
+            <div class="card">
+                <h3 style="color:#38bdf8;">Ringkasan</h3>
+                <ul>
+                    <li><strong>Extension methods</strong> menambahkan method ke tipe yang sudah ada tanpa modifikasi kode asli.</li>
+                    <li>Sintaks: <span class="code-inline">extension Name on Type { ... }</span></li>
+                    <li>Support: <strong>method</strong>, <strong>getter</strong>, <strong>setter</strong>, <strong>operator</strong>.</li>
+                    <li><strong>Generic extensions</strong> pada <span class="code-inline">List&lt;T&gt;</span> dan tipe generic lainnya.</li>
+                </ul>
+
+                <hr />
+
+                <h3 style="color:#38bdf8;">Best Practices</h3>
+                <ul>
+                    <li><strong>Nama jelas:</strong> <span class="code-inline">StringExtensions</span>, <span class="code-inline">DateTimeUtils</span>.</li>
+                    <li><strong>Group by type:</strong> Satu file per tipe utama.</li>
+                    <li><strong>Avoid overuse:</strong> Jangan jadikan <em>semua</em> utility sebagai extension.</li>
+                    <li><strong>Null safety:</strong> Handle nullable types dengan baik.</li>
+                    <li><strong>Dokumentasi:</strong> Tambahkan komentar untuk public extensions.</li>
+                </ul>
+
+                <div style="margin-top:14px; background:#0f172a; padding:14px 18px; border-radius:8px; border-left:4px solid #38bdf8;">
+                    <p style="font-size:14px; color:#94a3b8;">
+                        ⚡ <strong>Ingat:</strong> Extension methods adalah <em>syntactic sugar</em> – mereka tidak mengubah tipe asli secara runtime.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOAL 1: Konflik Nama Antar Extension ===== -->
+        <section id="soal1">
+            <h2>🧩 Soal 1: Konflik Nama Antar Extension</h2>
+            <div class="card">
+                <p><span class="soal-tag">SOAL</span> Perhatikan kode berikut:</p>
+                <pre>extension StringNumber on String {
+  int toInt() {
+    return int.parse(this);
+  }
+}
+
+extension StringDouble on String {
+  double toInt() {  // ← perhatikan nama method sama, return type beda
+    return double.parse(this);
+  }
+}
+
+void main() {
+  String angka = '123';
+  print(angka.toInt());
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p><strong>Pertanyaan:</strong><br />
+                Apa yang terjadi saat kode dijalankan? Jelaskan penyebabnya dan berikan solusi agar kedua extension dapat digunakan tanpa konflik.</p>
+
+                <div class="jawaban">
+                    <strong>✅ Jawaban:</strong><br />
+                    <p><strong>Apa yang terjadi?</strong> Kode <strong>gagal dikompilasi</strong> dengan error <em>ambiguous</em> karena Dart tidak dapat menentukan extension mana yang dipanggil untuk method <code>toInt()</code> pada <code>String</code>. Kedua extension memiliki nama method yang sama dengan return type berbeda, tetapi Dart tidak membedakan berdasarkan return type.</p>
+                    <p><strong>Penyebab:</strong> Dart melarang pemanggilan method yang ambigu. Saat kita memanggil <code>angka.toInt()</code>, compiler melihat ada dua extension yang menyediakan method dengan nama yang sama, sehingga terjadi konflik.</p>
+                    <p><strong>Solusi:</strong></p>
+                    <ul>
+                        <li><strong>Gunakan import dengan prefix</strong> – misalnya <code>import 'file.dart' as ext;</code> lalu panggil <code>ext.toInt(angka)</code> atau gunakan <code>angka.toInt()</code> dengan prefix? Sebenarnya prefix hanya berlaku untuk extension name, bukan method. Cara yang tepat adalah dengan <strong>memberi nama method yang berbeda</strong> pada salah satu extension, misalnya <code>toIntNumber()</code> dan <code>toIntDouble()</code>.</li>
+                        <li><strong>Atau gunakan import hide/show</strong> untuk menyembunyikan salah satu extension.</li>
+                        <li><strong>Atau panggil secara eksplisit dengan <code>extensionName(object).method()</code></strong> – misalnya <code>StringNumber(angka).toInt()</code> dan <code>StringDouble(angka).toInt()</code>.</li>
+                    </ul>
+                    <p>Contoh solusi dengan pemanggilan eksplisit:</p>
+                    <pre>void main() {
+  String angka = '123';
+  print(StringNumber(angka).toInt()); // memanggil dari StringNumber
+  print(StringDouble(angka).toInt()); // memanggil dari StringDouble
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOAL 2: Extension Method Tidak Bisa Mengakses Member Private ===== -->
+        <section id="soal2">
+            <h2>🔒 Soal 2: Extension Tidak Bisa Mengakses Member Private</h2>
+            <div class="card">
+                <p><span class="soal-tag">SOAL</span> Diberikan class berikut:</p>
+                <pre>class Counter {
+  int _value = 0;  // private
+
+  void increment() {
+    _value++;
+  }
+}
+
+extension CounterStats on Counter {
+  int getValue() {
+    return _value;  // ← baris ini bermasalah
+  }
+}
+
+void main() {
+  var c = Counter();
+  c.increment();
+  print(c.getValue());
+}</pre>
+                <button class="dartpad-btn" onclick="openDartpadFromPre(this)">▶ Buka di DartPad</button>
+                <p><strong>Pertanyaan:</strong><br />
+                Jelaskan mengapa kode di atas gagal dikompilasi. Bagaimana cara memperbaikinya tanpa mengubah akses modifier <code>_value</code> menjadi publik?</p>
+
+                <div class="jawaban">
+                    <strong>✅ Jawaban:</strong><br />
+                    <p><strong>Penyebab:</strong> Extension methods <strong>tidak dapat mengakses member private</strong> (<code>_value</code>) dari kelas yang diperluas. Private member hanya dapat diakses di dalam <em>library</em> yang sama (satu file). Karena extension berada di luar library kelas <code>Counter</code>, maka <code>_value</code> tidak terlihat.</p>
+                    <p><strong>Solusi tanpa mengubah akses modifier:</strong></p>
+                    <ul>
+                        <li><strong>Buat getter publik</strong> di dalam kelas <code>Counter</code> yang mengembalikan nilai <code>_value</code>. Kemudian extension bisa menggunakan getter tersebut.</li>
+                        <li>Atau <strong>pindahkan extension ke dalam library yang sama</strong> dengan kelas <code>Counter</code> (misalnya dalam satu file).</li>
+                    </ul>
+                    <p>Contoh perbaikan dengan menambahkan getter publik:</p>
+                    <pre>class Counter {
+  int _value = 0;
+
+  int get value => _value; // tambahkan getter
+
+  void increment() {
+    _value++;
+  }
+}
+
+extension CounterStats on Counter {
+  int getValue() {
+    return value; // sekarang bisa diakses
+  }
+}
+
+void main() {
+  var c = Counter();
+  c.increment();
+  print(c.getValue()); // output: 1
+}</pre>
+                    <p>Dengan getter, kita tetap menjaga <code>_value</code> sebagai private, tetapi memberikan akses baca melalui getter yang dapat digunakan oleh extension.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MODAL DARTPAD -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color:#38bdf8;">🧪 DartPad</h3>
+                <span onclick="closeModal()">✖</span>
+            </div>
+            <iframe id="dartpadFrame" style="width:100%; height:100%;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // ---- SIDEBAR TOGGLE (mobile) ----
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // ---- SEARCH ----
+        function searchMenu(input) {
+            var filter = input.value.toLowerCase();
+            document.querySelectorAll('.sidebar a').forEach(function(link) {
+                var text = link.innerText.toLowerCase();
+                link.style.display = text.includes(filter) ? 'block' : 'none';
+            });
+        }
+
+        // ---- PROGRESS BAR ----
+        window.onscroll = function() {
+            var winScroll = document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById('progress').style.width = scrolled + '%';
+        };
+
+        // ---- MODAL DARTPAD ----
+        function openDartpadFromPre(btn) {
+            // Cari elemen <pre> sebelumnya
+            var pre = btn.previousElementSibling;
+            while (pre && pre.tagName !== 'PRE') {
+                pre = pre.previousElementSibling;
+            }
+            if (!pre) return;
+
+            var code = pre.textContent;
+            // Encode untuk URL
+            var encoded = encodeURIComponent(code);
+            var url = 'https://dartpad.dev/embed-flutter.html?code=' + encoded + '&run=true&split=50';
+
+            document.getElementById('dartpadFrame').src = url;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('dartpadFrame').src = '';
+        }
+
+        // Tutup modal dengan tombol ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Tutup modal jika klik di luar konten
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+
+</body>
+</html>
